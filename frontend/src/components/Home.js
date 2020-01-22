@@ -9,7 +9,7 @@ import "./Home.css";
 export default class Home extends Component {
   constructor(props) {
     super(props);
-    this.stage = {
+    this.state = {
       noteLists: []
     };
   }
@@ -48,12 +48,12 @@ export default class Home extends Component {
   };
 
   render = () => {
-    // console.log(this.stage);
+    // console.log(this.state);
 
     return (
       <section id="home-section">
         <Row className="pt-4" span={24}>
-          {this.stage.noteLists.map((item, idk) => {
+          {this.state.noteLists.map((item, idk) => {
             return (
               <Col span={24 / 3}>
                 <Card
