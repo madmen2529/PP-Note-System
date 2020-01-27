@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "tigersut",
-    "database": "gallery",
+    "database": "note",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

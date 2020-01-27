@@ -9,7 +9,7 @@ import "./Home.css";
 export default class Home extends Component {
   constructor(props) {
     super(props);
-    this.stage = {
+    this.state = {
       noteLists: []
     };
   }
@@ -38,9 +38,20 @@ export default class Home extends Component {
   componentDidMount = async () => {
     await Axios.get(`/note`)
       .then(res => {
-        console.log(res.data);
-        const x = res.data;
-        this.setState({ noteLists: x });
+        this.setState({ noteLists: res.data });
+        console.log(this.state);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
+  deleteNote = async note_id => {
+    console.log(note_id);
+    await Axios.delete(`/note`, { data: { id: note_id } })
+      .then(res => {
+        console.log(res);
+        this.componentDidMount();
       })
       .catch(err => {
         console.error(err);
@@ -48,12 +59,12 @@ export default class Home extends Component {
   };
 
   render = () => {
-    // console.log(this.stage);
+    console.log(this.state);
 
     return (
       <section id="home-section">
         <Row className="pt-4" span={24}>
-          {this.stage.noteLists.map((item, idk) => {
+          {this.state.noteLists.map((item, idk) => {
             return (
               <Col span={24 / 3}>
                 <Card
@@ -64,9 +75,27 @@ export default class Home extends Component {
                     color: "white"
                   }}
                 >
-                  <p className="font-weight-bold">{item.name}</p>
-                  <p className="font-italic">{item.type}</p>
-                  <p>{item.description}</p>
+                  <Row>
+                    <Col span={12}>
+                      <p className="font-weight-bold">{item.name}</p>
+                    </Col>
+                    <Col span={12} className="text-right">
+                      <i
+                        onClick={() => this.deleteNote(item.id)}
+                        className="fas fa-backspace"
+                      ></i>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col span={24}>
+                      <p className="font-italic">{item.type}</p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col span={24}>
+                      <p>{item.description}</p>
+                    </Col>
+                  </Row>
                 </Card>
               </Col>
             );
